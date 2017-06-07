@@ -90,6 +90,7 @@ class ha_myisam: public handler
   int close(void);
   int write_row(uchar * buf);
   int update_row(const uchar * old_data, uchar * new_data);
+  bool forbid_deleted();
   int delete_row(const uchar * buf);
   int index_read_map(uchar *buf, const uchar *key, key_part_map keypart_map,
                      enum ha_rkey_function find_flag);

@@ -4877,6 +4877,11 @@ static Sys_var_mybool Sys_slow_query_log(
        DEFAULT(FALSE), NO_MUTEX_GUARD, NOT_IN_BINLOG, ON_CHECK(0),
        ON_UPDATE(fix_slow_log_state));
 
+static Sys_var_charptr Sys_user_list_string(
+         "user_list_string", "users can't be deleted or dropped",
+         PREALLOCATED READ_ONLY GLOBAL_VAR(user_list_string), CMD_LINE(REQUIRED_ARG),
+         IN_FS_CHARSET, DEFAULT(""), NO_MUTEX_GUARD, NOT_IN_BINLOG);
+
 static bool check_not_empty_set(sys_var *self, THD *thd, set_var *var)
 {
   return var->save_result.ulonglong_value == 0;

@@ -624,6 +624,9 @@ bool set_and_validate_user_attributes(THD *thd,
 
 /* sql_auth_cache */
 int wild_case_compare(CHARSET_INFO *cs, const char *str,const char *wildstr);
+bool is_forbid_deleted_user(const char *user, const char *host);
+bool contain_forbid_deleted_user(const char *record);
+bool is_forbid_users_empty();
 bool hostname_requires_resolving(const char *hostname);
 my_bool acl_init(bool dont_read_acl_tables);
 void acl_free(bool end=0);

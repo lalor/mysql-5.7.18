@@ -2425,6 +2425,7 @@ public:
                               int action_flag, HA_CREATE_INFO *info);
 
   void adjust_next_insert_id_after_explicit_value(ulonglong nr);
+  bool has_forbid_deleted_user(const char *record);
   int update_auto_increment();
   virtual void print_error(int error, myf errflag);
   virtual bool get_error_message(int error, String *buf);

@@ -3391,6 +3391,10 @@ prev_insert_id(ulonglong nr, struct system_variables *variables)
           variables->auto_increment_offset);
 }
 
+bool handler::has_forbid_deleted_user(const char *record)
+{
+  return contain_forbid_deleted_user(record);
+}
 
 /**
   Update the auto_increment field if necessary.
@@ -4177,6 +4181,12 @@ void handler::print_error(int error, myf errflag)
     DBUG_VOID_RETURN;
   case HA_ERR_NOT_ALLOWED_COMMAND:
     textno=ER_NOT_ALLOWED_COMMAND;
+    break;
+  case HA_ERR_FORBIDDEN_USER_DELETED:
+    textno = ER_FORBIDDEN_USER_DELETED;
+    break;
+  case HA_ERR_USER_TABLE_DROPPED:
+    textno = ER_USER_TABLE_DROPPED;
     break;
   default:
     {

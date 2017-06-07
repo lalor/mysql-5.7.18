@@ -693,6 +693,7 @@ char *master_info_file;
 char *relay_log_info_file, *report_user, *report_password, *report_host;
 char *opt_relay_logname = 0, *opt_relaylog_index_name=0;
 char *opt_general_logname, *opt_slow_logname, *opt_bin_logname;
+char *user_list_string;
 
 /* Static variables */
 
@@ -6982,6 +6983,7 @@ static int mysql_init_variables(void)
   opt_skip_name_resolve= 0;
   opt_ignore_builtin_innodb= 0;
   opt_general_logname= opt_update_logname= opt_binlog_index_name= opt_slow_logname= NULL;
+  user_list_string = 0;
   opt_tc_log_file= (char *)"tc.log";      // no hostname in tc_log file name !
   opt_secure_auth= 0;
   opt_myisam_log= 0;

@@ -2147,6 +2147,7 @@ public:
 
   my_thread_id thread_id;
   time_t start_time;
+  ulonglong rpl_wait_begin_usec;
   uint   command;
   const char *user,*host,*db,*proc_info,*state_info;
   CSET_STRING query_string;
@@ -2310,6 +2311,9 @@ public:
     /* MYSQL_TIME */
     thd_info->start_time= inspect_thd->start_time.tv_sec;
 
+    /* ACK_WAIT_TIME */
+    thd_info->rpl_wait_begin_usec = inspect_thd->rpl_wait_begin_usec;
+
     m_thread_infos->push_back(thd_info);
   }
 };
@@ -2333,6 +2337,7 @@ void mysqld_list_processes(THD *thd,const char *user, bool verbose)
   field_list.push_back(new Item_empty_string("Command",16));
   field_list.push_back(field= new Item_return_int("Time",7, MYSQL_TYPE_LONG));
   field->unsigned_flag= 0;
+  field_list.push_back(field= new Item_return_int("ACK_WAIT_TIME",13, MYSQL_TYPE_LONGLONG));
   field_list.push_back(field=new Item_empty_string("State",30));
   field->maybe_null=1;
   field_list.push_back(field=new Item_empty_string("Info",max_query_length));
@@ -2369,6 +2374,10 @@ void mysqld_list_processes(THD *thd,const char *user, bool verbose)
       protocol->store_long ((longlong) (now - thd_info->start_time));
     else
       protocol->store_null();
+    if (thd_info->rpl_wait_begin_usec)
+        protocol->store_long ((longlong) (my_micro_time() - thd_info->rpl_wait_begin_usec));
+    else
+        protocol->store_long(0);
     protocol->store(thd_info->state_info, system_charset_info);
     protocol->store(thd_info->query_string.str(),
                     thd_info->query_string.charset());
@@ -2516,6 +2525,11 @@ public:
         store((longlong) (my_time(0) - inspect_thd->start_time.tv_sec), false);
     else
       table->field[5]->store(0, false);
+
+    /* ACK_WAIT__TIME */
+    if (inspect_thd->rpl_wait_begin_usec)
+      table->field[6]->
+        store((longlong) (my_micro_time() - inspect_thd->rpl_wait_begin_usec), false);
 
     schema_table_store_record(m_client_thd, table);
   }
@@ -8785,6 +8799,7 @@ ST_FIELD_INFO processlist_fields_info[]=
   {"DB", NAME_CHAR_LEN, MYSQL_TYPE_STRING, 0, 1, "Db", SKIP_OPEN_TABLE},
   {"COMMAND", 16, MYSQL_TYPE_STRING, 0, 0, "Command", SKIP_OPEN_TABLE},
   {"TIME", 7, MYSQL_TYPE_LONG, 0, 0, "Time", SKIP_OPEN_TABLE},
+  {"ACK_WAIT_TIME", 13, MYSQL_TYPE_LONGLONG, 0, 0, "Ack_wait_time", SKIP_OPEN_TABLE},
   {"STATE", 64, MYSQL_TYPE_STRING, 0, 1, "State", SKIP_OPEN_TABLE},
   {"INFO", PROCESS_LIST_INFO_WIDTH, MYSQL_TYPE_STRING, 0, 1, "Info",
    SKIP_OPEN_TABLE},

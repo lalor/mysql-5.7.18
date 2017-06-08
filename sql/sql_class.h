@@ -1450,6 +1450,7 @@ private:
 
 public:
   MDL_context mdl_context;
+  ulonglong rpl_wait_begin_usec;
 
   /*
     MARK_COLUMNS_NONE:  Means mark_used_colums is not set and no indicator to

@@ -2485,8 +2485,8 @@ public:
     val= thread_state_info(inspect_thd);
     if (val)
     {
-      table->field[6]->store(val, strlen(val), system_charset_info);
-      table->field[6]->set_notnull();
+      table->field[7]->store(val, strlen(val), system_charset_info);
+      table->field[7]->set_notnull();
     }
 
     mysql_mutex_unlock(&inspect_thd->LOCK_thd_data);
@@ -2513,8 +2513,8 @@ public:
       if (query_str)
       {
         const size_t width= min<size_t>(PROCESS_LIST_INFO_WIDTH, query_length);
-        table->field[7]->store(query_str, width, inspect_thd->charset());
-        table->field[7]->set_notnull();
+        table->field[8]->store(query_str, width, inspect_thd->charset());
+        table->field[8]->set_notnull();
       }
     }
     mysql_mutex_unlock(&inspect_thd->LOCK_thd_query);

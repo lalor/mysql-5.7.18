@@ -20,7 +20,7 @@
 #    --source include/wait_condition.inc
 #    --echo Executed the test condition $wait_condition_reps times
 #
-# 
+#
 # EXAMPLE
 #    events_bugs.test, events_time_zone.test
 #
@@ -60,6 +60,7 @@ while ($wait_counter)
 }
 if (!$success)
 {
+  select * from information_schema.processlist;
   echo Timeout in wait_condition.inc for $wait_condition;
   if ($show_rpl_debug_info)
   {

@@ -1129,7 +1129,7 @@ static int handle_get_position(Log_event* ev, my_off_t pos)
 
 static void handle_only_print_info(Log_event* ev, my_off_t pos)
 {
-	char ll_buff[21];
+	//char ll_buff[21];
 	ulonglong count_tmp= pos / (size_interval);
 
 	if ((count_tmp > prev_size_count) && prev_is_xid)

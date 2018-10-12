@@ -2532,7 +2532,8 @@ log_event_print_value(const uchar *ptr,
     length= meta;
 	if (length < 256)
 	{
-	  length= *ptr;
+	  if (ptr)
+	    length= *ptr;
 	  return length + 1;
 	}
 	else
